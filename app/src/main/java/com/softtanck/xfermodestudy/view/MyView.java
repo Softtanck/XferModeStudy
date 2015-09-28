@@ -50,14 +50,14 @@ public class MyView extends ImageView {
         mOut = Bitmap.createBitmap(mBitmap.getWidth(), mBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.RED);
+        mPaint.setColor(Color.BLUE);
     }
 
     private Bitmap getInBitmap(Bitmap mOut) {
         Canvas canvas = new Canvas(mOut);
-//        Rect rect = new Rect(0, 0, width, height);
-//        canvas.drawRect(rect, mPaint);
-        canvas.drawCircle(width / 2, height / 2, 50, mPaint);
+        Rect rect = new Rect(0, 0, width, height);
+        canvas.drawRect(rect, mPaint);
+//        canvas.drawCircle(width / 2, height / 2, 50, mPaint);
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(mBitmap, 0, 0, mPaint);
         return mOut;
