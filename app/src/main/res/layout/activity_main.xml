@@ -11,10 +11,17 @@
 
     <Button
         android:id="@+id/myView"
-        android:transitionName="tanck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="ceshi"
-        android:text="ceshi" />
+        android:text="ceshi"
+        android:transitionName="tanck" />
+
+
+    <com.softtanck.xfermodestudy.view.MyView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="200dp" />
+
 
 </RelativeLayout>

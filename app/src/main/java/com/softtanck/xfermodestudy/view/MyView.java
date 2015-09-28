@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
+import android.graphics.Xfermode;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,8 +29,6 @@ public class MyView extends ImageView {
     private Paint mPaint;
     private int width;
     private int height;
-    private BitmapShader mBitmapShader;
-    private Canvas canvas;
 
     public MyView(Context context) {
         this(context, null);
@@ -49,11 +48,15 @@ public class MyView extends ImageView {
         mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test);
         mOut = Bitmap.createBitmap(mBitmap.getWidth(), mBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         mPaint = new Paint();
-        mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         mPaint.setAntiAlias(true);
-//        mPaint.setShader(mBitmapShader);
-//        mPaint.setStyle(Paint.Style.FILL);
-//        mPaint.setColor(Color.RED);
+    }
+
+    private Bitmap getInBitmap(Bitmap mOut) {
+        Canvas canvas = new Canvas(mOut);
+        canvas.drawCircle(width / 2, height / 2, 50, mPaint);
+        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(mBitmap, 0, 0, mPaint);
+        return mOut;
     }
 
     @Override
@@ -61,19 +64,11 @@ public class MyView extends ImageView {
         super.onLayout(changed, left, top, right, bottom);
         width = getWidth();
         height = getHeight();
-        canvas = new Canvas(mOut);
-        canvas.drawCircle(width / 2, height / 2, 50, mPaint);
-        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(mBitmap, 0, 0, mPaint);
     }
 
     @SuppressLint("NewApi")
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawBitmap(mOut, 0, 0, mPaint);
-        canvas.drawCircle(width / 2, height / 2, width / 2, mPaint);
-        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(mBitmap, 0, 0, mPaint);
-//        canvas.drawCircle(width / 2, height / 2, width / 2, mPaint);
+        canvas.drawBitmap(getInBitmap(mOut), 0, 0, null);
     }
 }
